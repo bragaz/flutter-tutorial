@@ -18,11 +18,11 @@ class _MyAppState extends State<MyApp> {
   final _questions = [
     {
       'questionText': 'What\'s your favorite drink?',
-      'answers' : [{'text':'Beer','score': 10}, {'text':'Wine', 'score': 7}, {'text':'Spritz', 'score' : 5}, {'text':'Hugo', 'score' : 3}],
+      'answers' : [{'text':'Beer','score': 5}, {'text':'Wine', 'score': 3}, {'text':'Spritz', 'score' : 2}, {'text':'Hugo', 'score' : 1}],
     },
     {
       'questionText': 'What\'s your favorite drug?',
-      'answers' : [{'text':'Weed', 'score':10}, {'text':'LSD', 'score': 7}, {'text':'Cocaine', 'score': 3}],
+      'answers' : [{'text':'Weed', 'score':5}, {'text':'LSD', 'score': 3}, {'text':'Cocaine', 'score': 1}],
     },
     {
       'questionText': 'Who\'s the great smoker?',
@@ -32,6 +32,13 @@ class _MyAppState extends State<MyApp> {
 
   var _questionIndex = 0;
   var _totalScore = 0;
+
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
 
   void _answerQuestion(int score) {
 
@@ -53,7 +60,7 @@ class _MyAppState extends State<MyApp> {
       ),
       body: _questionIndex < _questions.length
           ? Quiz(_questions , _questionIndex, _answerQuestion)
-          : Result()
+          : Result(_totalScore, _resetQuiz)
     ),);
   }
 }
