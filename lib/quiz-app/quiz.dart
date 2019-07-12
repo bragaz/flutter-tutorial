@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'question.dart';
-import 'answer.dart';
+import 'package:first_app/quiz-app/question.dart';
+import 'package:first_app/quiz-app/answer.dart';
 
 class Quiz extends StatelessWidget {
 
