@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets/new_transaction.dart';
 import 'models/Transaction.dart';
 import 'widgets/transaction_list.dart';
+import 'widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,6 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Expense Planner',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        accentColor: Colors.greenAccent,
+        textTheme: ThemeData.light().textTheme.copyWith(
+          button: TextStyle(color: Colors.white)
+        )
+      ),
       home: MyHomePage(),
     );
   }
@@ -23,17 +31,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-        id: 't1', title: 'new shoes', amount: 100.25, date: DateTime.now()),
-    Transaction(
-        id: 't1', title: 'grocery store', amount: 21.50, date: DateTime.now())
+//    Transaction(
+//        id: 't1', title: 'new shoes', amount: 100.25, date: DateTime.now()),
+//    Transaction(
+//        id: 't1', title: 'grocery store', amount: 21.50, date: DateTime.now())
   ];
 
-  void _addNewTransaction(String title, double amount) {
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
+  void _addNewTransaction(String title, double amount, DateTime chosenDate) {
     final newTx = Transaction(
         title: title,
         amount: amount,
-        date: DateTime.now(),
+        date: chosenDate,
         id: DateTime.now().toString());
 
     setState(() {
@@ -54,11 +72,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx){
+        return tx.id == id;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('flutter app'),
+        title: Text('Expenses planner'),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -73,17 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                child: Text(
-                  'chart',
-                  textAlign: TextAlign.center,
-                ),
-                elevation: 5,
-              ),
-            ),
-            TransactionList(_userTransactions)
+            Chart(_recentTransactions),
+            TransactionList(_userTransactions, _deleteTransaction)
           ],
         ),
       ),
