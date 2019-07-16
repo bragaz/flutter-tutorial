@@ -8,7 +8,7 @@ import 'models/Transaction.dart';
 import 'widgets/transaction_list.dart';
 import 'widgets/chart.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
