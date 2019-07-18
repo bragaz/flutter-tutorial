@@ -9,7 +9,7 @@ import 'screens/tabs_screen.dart';
 import 'source/dummy-data.dart';
 import 'models/Meal.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
